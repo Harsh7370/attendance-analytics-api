@@ -1,26 +1,80 @@
-# Candidate kit
+# Employee Attendance & Analytics API
 
-Read in this order:
+I built this project using Python, FastAPI, and MongoDB to manage employee attendance and generate useful analytics. It covers daily punch-in and punch-out, attendance corrections, and department-wise reporting.
 
-1. `PROBLEM_STATEMENT.docx`: what you are asked to do, how it is evaluated.
-2. `openapi.yaml`: the API contract and the business rules (R1 - R10).
-3. `DATA_MODEL.md`: what is stored in MongoDB, with nine sample documents.
-4. `app/main.py`: the starter. Put **all** your code in this one file. It must start with `uvicorn app.main:app --port 8000`.
-5. `REVIEW.md`, `DECISIONS.md`: templates to fill in.
+## Features
 
-`sample_data/` holds the nine sample documents as MongoDB Extended JSON; `sample_seed.py` loads them. The grader's dataset is
-much larger and contains cases they do not show.
+- Employee creation and listing
+- Punch-in and punch-out with validation
+- Manual attendance corrections with an audit trail
+- Monthly attendance analytics
+- Department-wise attendance summaries
+- Late-arrival leaderboard with ranking and tie handling
+- Department attendance trends with a seven-day moving average
+- MongoDB indexes to prevent duplicate attendance records
+- Query execution statistics for checking database performance
 
-## Local setup
+## Tech Stack
+
+- Python
+- FastAPI
+- MongoDB
+- PyMongo
+- Pytest
+
+## Getting Started
+
+### 1. Create a virtual environment
+
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env            # set MONGO_URI / MONGO_DB (local docker: docker run -p 27017:27017 mongo:7)
-python sample_seed.py
-uvicorn app.main:app --port 8000 --reload
+python -m venv .venv
 ```
-MongoDB **6.0 or newer** is required (the grader uses 7.0). MongoDB Atlas free tier (M0) works.
 
-## Submit
-A public Git repository with `app/main.py`, `requirements.txt`, `REVIEW.md`, `DECISIONS.md` and a short `README.md`.
-No `.env`, no secrets, no Dockerfile.
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 2. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 3. Start MongoDB
+
+Make sure MongoDB is running locally or configure your MongoDB connection using the `MONGO_URI` and `MONGO_DB` environment variables.
+
+### 4. Load sample data
+
+```bash
+python sample_seed.py
+```
+
+**Note:** This script clears the existing `employees` and `attendance_logs` collections before loading sample data. Run it only when you are okay with replacing those records.
+
+### 5. Run the API
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+Open `http://127.0.0.1:8000/docs` to explore the API endpoints.
+
+## Run Tests
+
+```bash
+python -m pytest test_attendance_helpers.py -v
+```
+
+## Project Structure
+
+- `app/main.py` — API endpoints and business logic
+- `sample_seed.py` — Loads sample data into MongoDB
+- `sample_data/` — Sample employee and attendance records
+- `test_attendance_helpers.py` — Attendance helper tests
+- `DATA_MODEL.md` — Database structure
+- `DECISIONS.md` — Design choices and trade-offs
+- `REVIEW.md` — Review of the starter code
+- `openapi.yaml` — API specification
